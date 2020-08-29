@@ -10,10 +10,10 @@ def test_init():
     director3 = Director(42)
     assert director3.director_full_name is None
 
-def test_repr(self):
+def test_repr():
     pass
 
-def test_eq(self):
+def test_eq():
     pass
 
 def test_lt():
