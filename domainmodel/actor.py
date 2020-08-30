@@ -1,4 +1,3 @@
-
 class Actor:
 
     def __init__(self, actor_full_name: str):

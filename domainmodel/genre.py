@@ -1,4 +1,3 @@
-
 class Genre:
 
     def __init__(self, genre_name: str):
