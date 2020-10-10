@@ -66,7 +66,7 @@ class Movie:
 
     @property
     def genres(self) -> list:
-        return self._actors
+        return self._genres
 
     @genres.setter
     def genres(self, value):

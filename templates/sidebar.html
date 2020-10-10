@@ -1,0 +1,15 @@
+<aside id="sidebar">
+
+    <header>
+        <h1>Watchlist</h1>
+    </header>
+
+    {% for article in selected_articles %}
+        <div id="movie-container">
+            </a>
+            <div id="movie-description">
+                <p>{{ movie.title }}, ({{ movie.date }}).</p>
+            </div>
+        </div>
+    {% endfor %}
+</aside>

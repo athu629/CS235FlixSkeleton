@@ -2,7 +2,6 @@ import pytest
 
 from domainmodel.watchlist import WatchList
 from domainmodel.movie import Movie
-from domainmodel.review import Review
 
 def test_init():
     w1 = WatchList()
