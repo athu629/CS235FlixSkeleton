@@ -1,7 +1,22 @@
-{% extends 'layout.html' %} {% block content %}
+{% extends 'layout.html' %}
+{% block content %}
 <main id="main">
-  <p>
-    Hello World
-  </p>
+    <p> Hello everyone </p>
+    {% for movie in first_movie %}
+    <header id="movie-header">
+        <h1>{{ movie.get("title") }}, ({{movie.get("year")}})</h1>
+        <br>
+        <p>Description: {{movie.get("description")}}</p>
+        <br>
+        <p><u>Director:</u></p>
+        {{movie.get("director").director_full_name}}
+        <br>
+        <br>
+        <p><u>Genres:</u><p>
+        {% for genre in movie.get("genres") %}
+        {{genre.genre_name}},
+        {% endfor %}
+    </header>
+    {% endfor %}
 </main>
 {% endblock %}

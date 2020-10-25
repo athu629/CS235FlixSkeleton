@@ -2,7 +2,7 @@
 from datafilereaders.movie_file_csv_reader import MovieFileCSVReader
 
 def test_init():
-    filename = 'datafiles/Data1000Movies.csv'
+    filename = 'C:/Users/Alyssa/Documents/UOA/Uni 2020/CS235/CS235_A1/CS235FlixSkeleton/datafiles/Data1000Movies.csv'
     movie_file_reader = MovieFileCSVReader(filename)
     movie_file_reader.read_csv_file()
     assert len(movie_file_reader.dataset_of_movies) == 1000

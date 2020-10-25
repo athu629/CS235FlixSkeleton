@@ -17,7 +17,7 @@ def create_app(test_config=None):
     # Configure the app from configuration-file settings.
     app.config.from_object('config.Config')
     data_path = os.path.join('C:', os.sep, 'Users', 'Alyssa', 'Documents', 'UOA', 'Uni 2020',
-                        'CS235', 'CS235_A1', 'CS235FlixSkeleton', 'datafiles')
+                             'CS235', 'CS235_A1', 'CS235FlixSkeleton', 'datafiles')
 
     if test_config is not None:
         # Load test configuration, and override any configuration settings.
@@ -31,13 +31,17 @@ def create_app(test_config=None):
     # Build the application - these steps require an application context.
     with app.app_context():
         # Register blueprints.
+
         from home.home import home_blueprint
         app.register_blueprint(home_blueprint)
+
+        from utilities.utilities import utilities_blueprint
+        app.register_blueprint(utilities_blueprint)
 
         from movies.movies import movies_blueprint
         app.register_blueprint(movies_blueprint)
 
-        from utilities.utilities import utilities_blueprint
-        app.register_blueprint(utilities_blueprint)
+        from authentication.authentication import authentication_blueprint
+        app.register_blueprint(authentication_blueprint)
 
     return app

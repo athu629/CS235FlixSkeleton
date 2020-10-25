@@ -20,6 +20,7 @@ class RepositoryException(Exception):
 
 class AbstractRepository(abc.ABC):
 
+
     @abc.abstractmethod
     def add_user(self, user: User):
         """" Adds a User to the repository. """
@@ -44,6 +45,24 @@ class AbstractRepository(abc.ABC):
 
         If there is no Movie with the given title and release date, this method returns None.
         """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def add_genre(self) -> Genre:
+        """ Adds genre to the unique genre_list
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_unique_genre_list(self) -> List:
+        """ Returns list of genres in the repo
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_number_of_movies(self):
+        """ Returns movie count in repo
+                """
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -119,4 +138,40 @@ class AbstractRepository(abc.ABC):
     def get_reviews_by_user(self, user: User):
         """ Returns the Reviews stored in the repository. """
         raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_next_movie(self, movie: Movie):
+        """ Returns the next movie repository. """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_previous_movie(self, movie: Movie):
+        """ Returns the previous movie repository. """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_movie_ids_by_genre(self, genre_name: object) -> object:
+        """ Returns a list of movie_ids """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_movie_ids_by_director(self, director_name: object) -> object:
+        """ Returns a list of movie_ids """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_movie_ids_by_actor(self, actor_name: object) -> object:
+        """ Returns a list of movie_ids """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_unique_director_list(self):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_unique_actor_list(self):
+        raise NotImplementedError
+
+
+
 

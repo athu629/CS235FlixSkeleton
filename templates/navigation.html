@@ -1,7 +1,45 @@
 <nav id="nav">
-  <a class="btn-nav" href="{{ url_for('home_bp.home') }}">Home Bitch</a>
+  <h2 id="nav-header">
+    {% if 'username' in session %} Hello, {{ session['username'] }} {%
+    endif %}
+  </h2>
+  <a class="btn-nav" href="{{ url_for('home_bp.home') }}">Home</a>
+  <a class="btn-nav" href="{{ url_for('authentication_bp.register') }}">Register</a>
+  <a class="btn-nav" href="{{ url_for('authentication_bp.login') }}">Login</a>
+  <a class="btn-nav" href="{{ url_for('authentication_bp.logout') }}">Logout</a>
+  <br>
+
+    <div>
+        <h3>
+          <a class="btn-nav" href="{{ url_for('movies_bp.retrieve_movie')}}">Browse Movies by Title</a>
+          <a class="btn-nav" href="{{ url_for('movies_bp.movies_by_director')}}">Browse Movies by Director</a>
+          <a class="btn-nav" href="{{ url_for('movies_bp.movies_by_actor')}}">Browse Movies by Actor</a>
+        </h3>
+    </div>
+    <div>
+    <h3>
+      <select required>
+        <option value="" disabled selected hidden>Browse by Genre</option>
+        {% for key in genre_urls %}
+          <option value="{{ genre_urls[key] }}"> {{ key }}</option>
+        {% endfor %}
+        </select>
+      </h3>
+    </div>
+
+  <div>
+    <h3 id="search-bar">
+      <label for="fname">Search Movies:</label>
+      <br>
+      <input type="text" id="fname" name="fname" value="John"><br>
+    </h3>
+  </div>
+
 
   <div id="nav-footer">
     COMPSCI 235 Software Development Methodologies
   </div>
 </nav>
+
+
+

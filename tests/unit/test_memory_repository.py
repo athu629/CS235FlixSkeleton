@@ -17,14 +17,7 @@ from domainmodel.user import User
 from domainmodel.watchlist import WatchList
 
 
-TEST_DATA_PATH = os.path.join('C:', os.sep, 'Users', 'Alyssa', 'Documents', 'UOA', 'Uni 2020',
-                        'CS235', 'CS235_A1', 'CS235FlixSkeleton', 'datafiles')
 
-@pytest.fixture
-def in_memory_repo():
-    repo = MemoryRepository()
-    memory_repository.populate(TEST_DATA_PATH, repo)
-    return repo
 
 # user tests - add watched movies, total watch time, reviews relative to user
 def test_repository_can_add_a_user(in_memory_repo):
@@ -169,7 +162,6 @@ def test_repository_can_add_a_review(in_memory_repo):
     user = in_memory_repo.get_user('fmercury')
     review = Review(movie, "I like, great!", 7)
     in_memory_repo.add_review(user, review)
-    print(user.reviews)
     assert movie in in_memory_repo._movie_review_list
     assert in_memory_repo._movie_review_list[movie][0] == User('fmercury', '8734gfe2058v')
 

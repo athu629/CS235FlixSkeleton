@@ -15,8 +15,8 @@ class MovieFileCSVReader:
         self._dataset_of_genres = []
 
     def read_csv_file(self):
-        with open(self.__file_name, mode='r', encoding='utf-8-sig') as csvfile:
-            movie_file_reader = csv.DictReader(csvfile)
+        with open(self.__file_name, mode='r', encoding='utf-8-sig') as isfile:
+            movie_file_reader = csv.DictReader(isfile)
 
             index = 0
             for row in movie_file_reader:

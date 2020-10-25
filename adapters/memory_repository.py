@@ -13,6 +13,7 @@ from domainmodel.user import User
 from domainmodel.watchlist import WatchList
 from datafilereaders.movie_file_csv_reader import MovieFileCSVReader
 
+
 class MemoryRepository(AbstractRepository):
     # Movies ordered by title, not date, combination of title and date is assumed unique.
 
@@ -23,6 +24,11 @@ class MemoryRepository(AbstractRepository):
         self._reviews = list()
         # dict of movie object with list of review objects - rview object has movie;text;rating, user object has a list of reviews
         self._movie_review_list = dict()
+        self._years = list()
+        # get all types of genres in the repo, all actors, directors etc.
+        self._genres = list()
+        self._actors = list()
+        self._directors = list()
 
     def add_user(self, user: User):
         self._users.append(user)
@@ -37,16 +43,38 @@ class MemoryRepository(AbstractRepository):
         insort_left(self._movies, movie)
         key = str(movie.title) + str(movie.movie_date)
         self._movies_index[key] = movie
+        if movie.movie_date not in self._years:
+            self._years.append(movie.movie_date)
 
     def get_movie(self, movie_id: str) -> Movie:
         movie = None
         try:
-            print("HEY",movie_id)
             movie = self._movies_index[movie_id]
         except KeyError:
             pass  # Ignore exception and return None.
 
         return movie
+
+    def add_genre(self, genre: Genre):
+        if genre not in self._genres:
+            insort_left(self._genres, genre)
+
+    def get_unique_genre_list(self):
+        return self._genres
+
+    def add_director(self, director: Director):
+        if director not in self._directors:
+            insort_left(self._directors, director)
+
+    def get_unique_director_list(self):
+        return self._directors
+
+    def add_actor(self, actor: Actor):
+        if actor not in self._actors:
+            insort_left(self._actors, actor)
+
+    def get_unique_actor_list(self):
+        return self._actors
 
     def get_number_of_movies(self):
         return len(self._movies)
@@ -69,13 +97,49 @@ class MemoryRepository(AbstractRepository):
         existing_ids = []
         for id in id_list:
             if id in self._movies_index:
-                existing_ids.append(id)
-        movies = []
-        for id2 in existing_ids:
-            movies = self._movies_index[id2]
+                movie = self._movies_index[id]
+                existing_ids.append(movie)
 
         # Return a list of Movie objects
-        return movies
+        return existing_ids
+
+    def get_movie_ids_by_genre(self, genre_name: str):
+        # returns a list of movie_ids
+        genre = Genre(genre_name)
+        movie_ids_to_collect = []
+        for movie in self._movies:
+            if genre in movie.genres:
+                movie_ids_to_collect.append(movie)
+        movie_ids = []
+        for k in self._movies_index:
+            if self._movies_index[k] in movie_ids_to_collect:
+                movie_ids.append(k)
+        return movie_ids
+
+    def get_movie_ids_by_director(self, director_name: str):
+        director = Director(director_name)
+        movie_ids_to_collect = []
+        for movie in self._movies:
+            if director == movie.director:
+                movie_ids_to_collect.append(movie)
+        movie_ids = []
+        for k in self._movies_index:
+            if self._movies_index[k] in movie_ids_to_collect:
+                movie_ids.append(k)
+        print(movie_ids)
+        return movie_ids
+
+    def get_movie_ids_by_actor(self, actor_name: str):
+        actor = Actor(actor_name)
+        movie_ids_to_collect = []
+        for movie in self._movies:
+            if actor in movie.actors:
+                movie_ids_to_collect.append(movie)
+        movie_ids = []
+        for k in self._movies_index:
+            if self._movies_index[k] in movie_ids_to_collect:
+                movie_ids.append(k)
+        return movie_ids
 
     # Helper method to return movie index.
     def movie_index(self, movie: Movie):
@@ -95,7 +159,7 @@ class MemoryRepository(AbstractRepository):
                         previous_movie = self._movies[i - 1]
                         break
                     elif i == 0:
-                        previous_movie = self._movies[len(self._movies)-1]
+                        previous_movie = self._movies[len(self._movies) - 1]
                         break
         except ValueError:
             # No subsequent movies, so return None.
@@ -124,22 +188,23 @@ class MemoryRepository(AbstractRepository):
     def get_previous_year(self, movie: Movie):
         previous_movie_year = None
 
-        try:
+        if movie.movie_date - 1 in self._years:
             previous_movie_year = movie.movie_date - 1
-        except ValueError:
-            # No subsequent movies, so return None.
+        else:
+            raise ValueError
+            # No earlier movies, so return None.
             pass
 
         return previous_movie_year
 
     def get_next_year(self, movie: Movie):
         next_movie_year = None
-
-        try:
+        if movie.movie_date + 1 in self._years:
             next_movie_year = movie.movie_date + 1
-        except ValueError:
-            # No subsequent movies, so return None.
-            pass
+        else:
+            raise ValueError
+        # No subsequent movies, so return None.
+        pass
 
         return next_movie_year
 
@@ -178,14 +243,13 @@ class MemoryRepository(AbstractRepository):
 
         for movie in self._movies:
             if movie.director == director and movie not in list4:
-                    list4.append(movie)
+                list4.append(movie)
 
         return list4
 
     def get_list_of_movies_by_genre(self, genre: Genre):
         # returns a list of movies with chosen genre
         list5 = []
-        print(genre)
         for movie in self._movies:
             for g in movie.genres:
                 if genre == g and movie not in list5:
@@ -209,7 +273,7 @@ class MemoryRepository(AbstractRepository):
                     self._movie_review_list[review.movie] = list1
 
     def get_reviews_by_movie(self, movie: Movie):
-        # Returns list of Review obj movie: [Reviw(), ..., review()]
+        # Returns list of Review obj movie: [Review(), ..., review()]
         review_list = []
         for k in self._movie_review_list:
             if k == movie:
@@ -225,6 +289,7 @@ class MemoryRepository(AbstractRepository):
         # users have a list of review objects which have the movie
         return user.reviews
 
+
 def read_other_csv_file(filename: str):
     with open(filename, mode='r', encoding='utf-8-sig') as infile:
         reader = csv.reader(infile)
@@ -238,6 +303,7 @@ def read_other_csv_file(filename: str):
             row = [item.strip() for item in row]
             yield row
 
+
 def load_movies(data_path: str, repo: MemoryRepository):
     path = os.path.join(data_path, 'test_movies.csv')
     movie_file_reader = MovieFileCSVReader(path)
@@ -245,6 +311,16 @@ def load_movies(data_path: str, repo: MemoryRepository):
 
     for movie in movie_file_reader.dataset_of_movies:
         repo.add_movie(movie)
+
+    for genre in movie_file_reader.dataset_of_genres:
+        repo.add_genre(genre)
+
+    for actor in movie_file_reader.dataset_of_actors:
+        repo.add_actor(actor)
+
+    for director in movie_file_reader.dataset_of_directors:
+        repo.add_director(director)
+
 
 def load_users(data_path: str, repo: MemoryRepository):
     users = dict()
@@ -257,6 +333,7 @@ def load_users(data_path: str, repo: MemoryRepository):
         repo.add_user(user)
         users[data_row[0]] = user
     return users
+
 
 def populate(data_path: str, repo: MemoryRepository):
     # Load articles and tags into the repository.
