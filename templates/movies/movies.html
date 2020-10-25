@@ -25,8 +25,7 @@
         {% for genre in movie.genres %}
             <h5>{{genre.genre_name}}</h5>
         {% endfor %}
-    </movie>
-    {% endfor %}
+
 
     <div style="float:right">
             {% if movie.review|length > 0 and movie.movie_id != show_reviews_for_movie %}
@@ -41,6 +40,8 @@
             {% endfor %}
         </div>
         {% endif %}
+    </movie>
+    {% endfor %}
 
     <nav style="clear:both">
             <div style="float:left">

@@ -5,6 +5,7 @@ from domainmodel.actor import Actor
 from domainmodel.genre import Genre
 from domainmodel.director import Director
 
+
 class MovieFileCSVReader:
 
     def __init__(self, file_name: str):
@@ -20,21 +21,21 @@ class MovieFileCSVReader:
 
             index = 0
             for row in movie_file_reader:
-                #title = row['Title']
-                #release_year = int(row['Year'])
-                #print(f"Movie {index} with title: {title}, release year {release_year}")
-                #print("HHH", row['Genre'], row['Director'], row['Actors'])
+                # title = row['Title']
+                # release_year = int(row['Year'])
+                # print(f"Movie {index} with title: {title}, release year {release_year}")
+                # print("HHH", row['Genre'], row['Director'], row['Actors'])
 
                 t = row['Title']
                 y = int(row['Year'])
                 r = int(row['Runtime (Minutes)'])
                 des = row['Description']
-                movie = Movie(t,y)
+                movie = Movie(t, y)
                 if movie not in self.dataset_of_movies:
                     movie.runtime_minutes = r
                     movie.description = des
                     self.dataset_of_movies.append(movie)
-                
+
                 actors = row['Actors'].split(",")
                 for a in actors:
                     act = Actor(a)
@@ -61,6 +62,7 @@ class MovieFileCSVReader:
         print("D", len(self.dataset_of_directors),self.dataset_of_directors)
         print("G", len(self.dataset_of_genres),self.dataset_of_genres)
         """
+
     @property
     def dataset_of_movies(self) -> list:
         return self._dataset_of_movies

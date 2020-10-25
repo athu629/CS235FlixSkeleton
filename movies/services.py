@@ -211,13 +211,11 @@ def movie_to_dict(movie: Movie):
         'actors': movie.actors,
         'director': movie.director,
         'description': movie.description,
-        'runtime': movie.runtime_minutes,
-        'review': get_reviews_for_movie()
+        'runtime': movie.runtime_minutes
+        #'review': get_reviews_for_movie()
         # 'image_hyperlink': movie.image_hyperlink,
     }
-    for m in repo.movie_review_list:
-        if movie == m:
-            movie_dict['reviews'] = repo.movie_review_list[m]
+
     return movie_dict
 
 

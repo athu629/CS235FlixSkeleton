@@ -14,12 +14,13 @@
           <a class="btn-nav" href="{{ url_for('movies_bp.retrieve_movie')}}">Browse Movies by Title</a>
           <a class="btn-nav" href="{{ url_for('movies_bp.movies_by_director')}}">Browse Movies by Director</a>
           <a class="btn-nav" href="{{ url_for('movies_bp.movies_by_actor')}}">Browse Movies by Actor</a>
+          <a class="btn-nav" href="{{ url_for('movies_bp.movies_by_genre')}}">Browse Movies by Genre</a>
         </h3>
     </div>
     <div>
     <h3>
-      <select required>
-        <option value="" disabled selected hidden>Browse by Genre</option>
+      <select required onchange="location = this.value">
+        <option value="" disabled selected hidden>Select Genre</option>
         {% for key in genre_urls %}
           <option value="{{ genre_urls[key] }}"> {{ key }}</option>
         {% endfor %}
@@ -27,11 +28,12 @@
       </h3>
     </div>
 
+  <br>
   <div>
     <h3 id="search-bar">
-      <label for="fname">Search Movies:</label>
+      <label>Search Movies:</label>
       <br>
-      <input type="text" id="fname" name="fname" value="John"><br>
+      <input type="text"><br>
     </h3>
   </div>
 

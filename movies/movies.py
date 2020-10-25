@@ -293,7 +293,7 @@ def movie_review():
     if request.method == 'GET':
         # Request is a HTTP GET to display the form.
         # Extract the article id, representing the article to comment, from a query parameter of the GET request.
-        movie_id = request.args.get('movie')
+        movie_id = request.args.get('target_id')
 
         # Store the article id in the form.
         form.movie_id.data = movie_id
@@ -306,11 +306,11 @@ def movie_review():
     # the user to enter a comment. The generated Web page includes a form object.
     movie = services.get_movie(movie_id, repo.repo_instance)
     return render_template(
-        'news/comment_on_article.html',
+        'movies/movie_reviews.html',
         title='Edit article',
         movie=movie,
         form=form,
-        handler_url=url_for('movie_bp.movie_review'),
+        handler_url=url_for('movies_bp.movie_review'),
         genre_urls=utilities.get_genre_urls(),
         director_url=utilities.get_director_urls(),
         actor_urls=utilities.get_actor_urls(),
